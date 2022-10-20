@@ -1,0 +1,76 @@
+Instructions for building Tic-tac-toe:
+Set up:
+	1. Download the newest version of Node.js
+	2. I typed npx create-react-app tic-tac-toe
+	3. Delete the original files in src by using rm -f *
+	4. Use nano command to create index.css and index.js with the CSS and JS code in the src/ 	
+	   folder
+	5. Add  import React from 'react';
+	import ReactDOM from 'react-dom/client';
+	import './index.css';
+  	 on top of index.jc
+	6. Use npm start, will open http://localhost:3000 and can see the basic game board for tic-
+	tac-toe.	
+	End of set up
+
+Build the Game:
+1. Start making the game board to show X first by editing the index.js file 
+    In the Square class
+	the onClick function will help and by adding a constructor to the class to use state will 		
+	show the X after clicking one of the squares (when defining constructor, remember to use 
+	super)
+	onClick = {() => this.setState({value: 'X'})}
+2. Make the board to keep track of what has been put down:
+    In the Board class
+   	We will again use constructor to the Board to have its initial state with 9 null in the 	
+	squares and will get replaced with 'X' and 'O' later.
+	 	this.state = {squares: Array(9).fill(null),}
+	Next, make the square to receive a value either 'X' 'O' or null, need to modify the 
+	renderSquare method, but first need to implement a method to handle the click that stores 
+	in the board instead of the individual squares.
+		 handleClick(i) {
+    			const squares = this.state.squares.slice();
+    			squares[i] = 'X';
+    			this.setState({squares: squares});
+  			}
+	(.slice() function is important here so that we can get a copy of the square arrays so that 
+	we don't modify the existing array)
+	Now that the Board can handle what's been clicked, will need to change the Square class, so 
+	that it no longer keeps track. Instead of implementing square as a class, we can just change
+	it to a function component
+		function Square(props) {
+  			return (
+        			<button className = "square" onClick ={props.onClick}>
+          			{props.value}
+        			</button>
+  				);           
+			}
+3. Alternating 'X' and 'O'
+      Set default first move as 'X', in Board class
+	 xIsNext: true,
+      And then handleClick function will use this boolean xIsNext to determine to use 'X' or 'O'
+	  squares[i] = this.state.xIsNext ? 'X' : 'O';
+	  xIsNext: !this.state.xIsNext,
+      In order to display it on the gameboard who plays next
+	   render() {
+    		const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+4. Determine who wins the game:
+       Implement a calculateWinner function
+       And call this function in Board's render to make sure who has won
+	 if (winner) 
+	 {
+     	 status = 'Winner: ' + winner;
+   	 } else {
+   	  status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    	 }
+	make sure the game is over and no more clicks in handleClick function
+	 if (calculateWinner(squares) || squares[i])
+	        {
+    		  return;
+    		}
+	Till this point, the basic tic-tac-toe game is finished.
+	
+      
+
+	 
+		
