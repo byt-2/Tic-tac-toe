@@ -69,6 +69,46 @@ Build the Game:
     		  return;
     		}
 	Till this point, the basic tic-tac-toe game is finished.
+5. Make the game remember all the move 
+	in Game, have history to store the moves 
+	delete constructor in Board
+	update the Game's render function, delete the render function in Board move the handleClick function from Board to Game and 
+	concatenate new history 
+	entries onto history
+		 this.setState({
+    			  history: history.concat([{
+       				 squares: squares,
+      			}]),
+6. Show the past moves
+	use the map() method for mapping all the moves in Game's render
+		const moves = history.map((step, move) => {
+        		const desc = move ?
+        		'Go to move #' + move :
+       			 'Go to game start';
+        		 return (
+	create a list called li to and will need to use the function jumpTo to move to the moves
+       		 <li>
+         	 <button onClick={() => this.jumpTo(move)}>{desc}</button>
+       		 </li>
+      		);
+   		 });
+	make the use of key for moves so that we won't get warning
+		 <li key = {move}>
+	indicate each step number by adding it to the Game's constructor
+		 stepNumber: 0,
+	define the jumpTo function and also set xIsNext to true if the number that is changing is even
+		 jumpTo(step) {
+    			this.setState({
+     			 stepNumber: step,
+     			 xIsNext: (step % 2) === 0,
+    			});
+ 		 }
+	update the handleClick's history to make sure we can go back and start again from that point
+		 const history = this.state.history.slice(0, this.state.stepNumber + 1);
+	modify Game's render so that it will render the move according to stepNumber
+		const current = history[this.state.stepNumber];
+								DONE
+	
 	
       
 
